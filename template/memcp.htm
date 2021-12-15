@@ -1,0 +1,39 @@
+<form method="post" autocomplete="off" action="home.php?mod=spacecp&ac=plugin&id=medalwear:memcp&pluginop=wear">
+    <input type="hidden" name="formhash" value="{FORMHASH}" />
+    勋章列表:<br>
+    <select id="medalSelect" onchange="changeSelect()" multiple size=20>
+	<!--{loop $displayMedals $medal}-->
+	    <!--{if $medal[have]}-->
+                <option value="$medal[medalid]">$medal[name]</option>
+        <!--{/if}-->
+	<!--{/loop}-->
+	</select><br>
+	<input type="hidden" name="medalIds" id="medalIds" value="" /><br>
+	(按住Ctrl以选择多个)<br>
+    <button type="submit" name="wearmedals" class="pn vm" value="yes" ><span>佩戴选中的勋章</span></button>
+</form>
+<script>
+wearingMedalIds = [$memberWearingMedalIdsStr];
+console.log(wearingMedalIds);
+var selectBox=document.getElementById("medalSelect");
+for(var i=0;i<selectBox.options.length;i++){
+	console.log(selectBox.options[i].value);
+	if(wearingMedalIds.includes(parseInt(selectBox.options[i].value))){
+		selectBox.options[i].selected=true;
+	}
+}
+changeSelect();
+function changeSelect(){
+	var medalSelectedIds=[];
+	var selectBox=document.getElementById("medalSelect");
+	for(var i=0;i<selectBox.options.length;i++){
+		if(selectBox.options[i].selected){
+			medalSelectedIds.push(selectBox.options[i].value);
+		}
+	}
+	console.log(medalSelectedIds);
+	medalIds=document.getElementById("medalIds");
+	medalIds.value=medalSelectedIds;
+	medalIds.value=medalIds.value.replace(RegExp(",","g"),"|");
+}
+</script>
