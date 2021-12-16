@@ -93,7 +93,7 @@ foreach ($forumMedals as $forumMedal){
 if($_GET['pluginop'] == 'wear' && submitcheck('wearmedals')) {
     if($_POST['medalIds'] == ""){
         $res = DB::query("UPDATE %t SET medals = '' WHERE uid = %d", array("common_member_field_forum", $_G['uid']));
-        C::t('common_member_field_forum')->clear_cache($uid);
+        C::t('common_member_field_forum')->clear_cache($_G['uid']);
         showmessage('全都脱掉了啦...', 'home.php?mod=spacecp&ac=plugin&id=medalwear:memcp');
     }
     $wearMedalIds = explode('`', $_POST['medalIds']);
