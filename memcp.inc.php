@@ -91,6 +91,8 @@ foreach ($forumMedals as $forumMedal){
 }
 
 if($_GET['pluginop'] == 'wear' && submitcheck('wearmedals')) {
+    if($_POST['medalIds'] == "")
+        showmessage('请先选择至少一个勋章!', 'home.php?mod=spacecp&ac=plugin&id=medalwear:memcp');
     $wearMedalIds = explode('`', $_POST['medalIds']);
     $verified = true;
     foreach ($wearMedalIds as $medalId){
