@@ -3,7 +3,7 @@
     勋章列表:<br>
     <select id="medalSelect" onchange="changeSelect()" multiple size=20>
 	<!--{loop $displayMedals $medal}-->
-	    <!--{if $medal[have]}-->
+	    <!--{if $medal[have]}--> <!-- && !$medal[expired]-->
                 <option value="$medal[medalid]">$medal[name]</option>
         <!--{/if}-->
 	<!--{/loop}-->
@@ -34,6 +34,6 @@ function changeSelect(){
 	console.log(medalSelectedIds);
 	medalIds=document.getElementById("medalIds");
 	medalIds.value=medalSelectedIds;
-	medalIds.value=medalIds.value.replace(RegExp(",","g"),"|");
+	medalIds.value=medalIds.value.replace(RegExp(",","g"),"`");
 }
 </script>

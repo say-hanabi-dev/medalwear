@@ -33,7 +33,8 @@ class plugin_medalwear_home extends plugin_medalwear
             
             memberMedalIds.forEach(changeMedalText);
 EOF;
-        $jscode = '<script>'.$jsvar.$jsfunc."</script>";
+        $jscode = '';
+        $jscode.= '<script>'.$jsvar.$jsfunc."</script>";
         return '<li><a href="home.php?mod=spacecp&ac=plugin&id=medalwear:memcp">勋章佩戴</a></li>'.$jscode;
     }
 }
