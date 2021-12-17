@@ -96,6 +96,10 @@ foreach ($forumMedals as $forumMedal){
     $displayMedals[$forumMedal['medalid']]['image']=$medalImages[$forumMedal['medalid']];
 }
 
+$memberWearingMedals = [];
+foreach ($memberWearingMedalIds as $key => $memberWearingMedalId)
+    $memberWearingMedals[$memberWearingMedalId] = $displayMedals[$memberWearingMedalId];
+
 if($_GET['pluginop'] == 'wear' && submitcheck('wearmedals')) {
     if($_POST['medalIds'] == ""){
         $res = DB::query("UPDATE %t SET medals = '' WHERE uid = %d", array("common_member_field_forum", $_G['uid']));
