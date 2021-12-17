@@ -112,8 +112,9 @@ if($_GET['pluginop'] == 'wear' && submitcheck('wearmedals')) {
     }
     if($verified){
         foreach($wearMedalIds as $key => $wearMedalId){ //对限时勋章进行特殊处理
-            if(getMemberMedalExpiration($_G['uid'], $wearMedalId)){
-                $wearMedalIds[$key] = $wearMedalId.'|'.$displayMedals[$wearMedalId]['expiration'];
+            $expiration = getMemberMedalExpiration($_G['uid'], $wearMedalId);
+            if($expiration){
+                $wearMedalIds[$key] = $wearMedalId.'|'.$expiration;
             }
         }
         if(updateMemberWearingMedalsByUid($_G['uid'], $wearMedalIds))
