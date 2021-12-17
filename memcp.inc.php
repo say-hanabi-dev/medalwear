@@ -85,15 +85,14 @@ $medalImages = getMedalImagesByMedals($forumMedals);
 
 $displayMedals = array();
 foreach ($forumMedals as $forumMedal){
-    $medalExpiration = getMemberMedalExpiration($_G['uid'], $forumMedal['medalid']);
-    $notExprired = $medalExpiration > time() || $medalExpiration == 0;
+    //$medalExpiration = getMemberMedalExpiration($_G['uid'], $forumMedal['medalid']);
+    //$notExprired = $medalExpiration > time() || $medalExpiration == 0;
     $displayMedals[$forumMedal['medalid']]['medalid']=$forumMedal['medalid'];
     $displayMedals[$forumMedal['medalid']]['name']=$forumMedal['name'];
     $displayMedals[$forumMedal['medalid']]['have']=in_array($forumMedal['medalid'], $memberMedalIds);
     $displayMedals[$forumMedal['medalid']]['wearing']=in_array($forumMedal['medalid'], $memberWearingMedalIds);
     $displayMedals[$forumMedal['medalid']]['expired']=!$notExprired;
-    $displayMedals[$forumMedal['medalid']]['expiration']=$medalExpiration;
-    $displayMedals[$forumMedal['medalid']]['expiration']=$medalExpiration;
+    //$displayMedals[$forumMedal['medalid']]['expiration']=$medalExpiration;
     $displayMedals[$forumMedal['medalid']]['image']=$medalImages[$forumMedal['medalid']];
 }
 
@@ -113,7 +112,7 @@ if($_GET['pluginop'] == 'wear' && submitcheck('wearmedals')) {
     }
     if($verified){
         foreach($wearMedalIds as $key => $wearMedalId){ //对限时勋章进行特殊处理
-            if($displayMedals[$wearMedalId]['expiration']){
+            if(getMemberMedalExpiration($_G['uid'], $wearMedalId)){
                 $wearMedalIds[$key] = $wearMedalId.'|'.$displayMedals[$wearMedalId]['expiration'];
             }
         }
