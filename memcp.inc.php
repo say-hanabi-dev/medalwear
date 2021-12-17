@@ -39,13 +39,8 @@ function getMemberWearingMedalIds($uid){
     $memberMedalIds = getMemberFieldForumMedals($uid);
     // 处理有有效期限制的勋章
     foreach($memberMedalIds as $key => $memberMedalId){
-        if(strpos($memberMedalId, '|')){
-            if(explode('|', $memberMedalId)[1] > 0){
+        if(strpos($memberMedalId, '|'))
                 $memberMedalIds[$key] = explode('|', $memberMedalId)[0];
-            }else{
-                unset($memberMedalIds[$key]);
-            }
-        }
     }
     return $memberMedalIds;
 }
@@ -71,12 +66,22 @@ function getMemberMedalExpiration($uid, $medalId){
     return intval(DB::fetch_first('SELECT * FROM '.DB::table('forum_medallog').' WHERE uid='.$uid.' AND medalid='.$medalId.' ORDER BY dateline DESC')['expiration']);
 }
 
+// 获取勋章图片
+function getMedalImagesByMedals($forumMedals){
+    $medalImages = array();
+    foreach ($forumMedals as $forumMedal) {
+        $medalImages[$forumMedal['medalid']] = $forumMedal['image'];
+    }
+    return $medalImages;
+}
+
 $forumMedals = getForumMedals();
 $memberMedals = getMemberMedals($_G['uid']);
 $memberMedalIds = getMedalIdsByMedals($memberMedals);
 $medalNames = getMedalNamesByForumMedals($forumMedals);
 $memberWearingMedalIds = getMemberWearingMedalIds($_G['uid']);
 $memberWearingMedalIdsStr = implode(',', $memberWearingMedalIds);
+$medalImages = getMedalImagesByMedals($forumMedals);
 
 $displayMedals = array();
 foreach ($forumMedals as $forumMedal){
@@ -88,6 +93,8 @@ foreach ($forumMedals as $forumMedal){
     $displayMedals[$forumMedal['medalid']]['wearing']=in_array($forumMedal['medalid'], $memberWearingMedalIds);
     $displayMedals[$forumMedal['medalid']]['expired']=!$notExprired;
     $displayMedals[$forumMedal['medalid']]['expiration']=$medalExpiration;
+    $displayMedals[$forumMedal['medalid']]['expiration']=$medalExpiration;
+    $displayMedals[$forumMedal['medalid']]['image']=$medalImages[$forumMedal['medalid']];
 }
 
 if($_GET['pluginop'] == 'wear' && submitcheck('wearmedals')) {
@@ -116,4 +123,3 @@ if($_GET['pluginop'] == 'wear' && submitcheck('wearmedals')) {
             showmessage('勋章佩戴状态没有变化或数据库错误...', 'home.php?mod=spacecp&ac=plugin&id=medalwear:memcp');
     }
 }
-?>
